@@ -1,0 +1,140 @@
+/* 
+  by: [Victor Huicochea]
+*/
+
+import java.util.*;
+import java.io.*;
+
+public class ToyStoreInventory {
+
+	/**************** ATTRIBUTES *******************************************
+
+	 ***********************************************************************/
+	 
+  private ToyStoreItem[] inventory = new ToyStoreItem[25];//store up to 25 toys.
+  private int[] quantity = new int[25]; //keep track of up to 25 toys.
+  private int numOfToys;
+
+
+  /* Constructor 1 ************************************************************
+  * Constructor receives a file name and populates the array.
+  ****************************************************************************/
+  public ToyStoreInventory (String fileName) throws IOException{
+  	File inventoryList = new File(fileName);
+	Scanner scnr = new Scanner(inventoryList);
+	String[] holder = new String[6];
+	
+	while (scnr.hasNextLine()){
+		
+		holder = scnr.nextLine().split(",");
+		
+		ToyStoreItem newItem = new ToyStoreItem(holder[0], holder[1], Double.parseDouble(holder[2]), holder[3], Integer.parseInt(holder[4]), holder[5]);
+		inventory[numOfToys] = newItem;
+		quantity[numOfToys] = 1;
+		numOfToys++;
+	}
+  }
+
+
+	/**************** GETTERS / ACCESSORS **********************************
+	 * Methods that allow to access the values of the attributes
+	 *
+	 ***********************************************************************/
+
+    /*getter for numToys */
+	public int getNumOfToys(){
+		return this.numOfToys;
+	}
+
+    /******************* Actuators ****************************************/
+
+	public void printSingleToy(int index){
+		inventory[index].print();
+		System.out.println("  quantity: " + quantity[index]);
+	}
+	public void printInventory(){
+		for(int i = 0; i<numOfToys; i++){
+			inventory[i].print();
+		}
+	}
+	
+    public void print() {
+       /*prints the name and the code of all the ToyStoreItems available in the inventory
+       NOTE: prints only those with quantity greater than 0 */
+	   	for(int i = 0; i<numOfToys; i++){
+			if (quantity[i] > 0){
+				System.out.println(inventory[i].getCode() + "   " + inventory[i].getName());
+			}
+		}
+    }
+
+
+    //Adds a ToyStoreItem to the inventory and the quantity of that toy.
+    public void addToy(ToyStoreItem toAdd, int quantity) {
+      //Note: if the ToyStoreItem already exists in the inventory, add to the quantity.
+	  	boolean found = false;
+		for (int i = 0; i<numOfToys; i++){
+			if (inventory[i].equals(toAdd)){
+				this.quantity[i] = this.quantity[i] + quantity;
+				found = true;
+			}
+		}
+		if (!found) {
+			inventory[numOfToys] = toAdd;
+			this.quantity[numOfToys] = quantity;
+		}
+		numOfToys++;
+    }
+
+    //Subracts ToyStoreItems from the inventory
+    public void deleteToy(ToyStoreItem toDelete, int quantity){
+      boolean found = false;
+      
+      //Note: you cannot subtract a ToyStoreItem if the quantity is 0
+	  for(int i = 0; i<numOfToys; i++){
+	  	if(inventory[i].equals(toDelete)){
+			found = true;
+			if (this.quantity[i] > 0){
+				this.quantity[i] = this.quantity[i] - quantity;
+			}
+			else {
+				System.out.println("There are no " + inventory[i].getName() + " left, you can't substract an item.");
+			}
+		}
+	  }
+	  if (!found) {
+	  	System.out.println("I'm sorry, we could not find the toy you were looking for.");
+	  }
+    }
+
+    //Receives the code of a ToyStoreItem and returns the quantity
+    public int checkQuantity(String code){
+	  for (int i =0; i<numOfToys; i++){
+	  	if (inventory[i].getCode().equals(code)){
+			return quantity[i];
+		}
+	  }
+	  	return 0;
+    }
+
+    //Receives a ToyStoreItem code and returns the index where the ToyStoreItem is stored
+    //Returns -1 if not found in the inventory
+    public int findToy(String code){
+      //TO DO
+	   for (int i =0; i<numOfToys; i++){
+	  	if (inventory[i].getCode().equals(code)){
+			return i;
+		}
+	  }
+	  	return -1;
+    }
+	
+	public ToyStoreItem returnToy(int index){
+		return inventory[index];
+	}
+
+}
+
+
+		
+	
