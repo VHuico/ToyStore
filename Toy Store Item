@@ -1,0 +1,124 @@
+/*
+  by: [Victor Huicochea]
+*/
+
+
+public class ToyStoreItem {
+
+	/**************** ATTRIBUTES *******************************************
+	 ***********************************************************************/
+    private String name; // name of toy; e.g., chess
+    private String brand; // brand of the toy
+    private double price; // price of toy
+    private boolean batteriesRequired; // indicates if the toy required batteries 
+    private int age; // minimum recommended age
+    private String code; //unique code to identify the toy contains 1 letter (A-Z) and 3 digits (0-9)
+
+	/********************** CONSTRUCTORS *********************************/
+	/* default constructor */
+	public ToyStoreItem() {
+	}
+	/* Constructor #2
+	/* parameters: name, price, code*/
+	public ToyStoreItem(String name, double price, String code){
+		this.name = name;
+		this.price = price;
+		this.code = code;
+	}
+
+	
+	/* Constructor #3
+	parameters: name, brand, price, batteriesRequired, age, code */
+	public ToyStoreItem(String name, String brand, double price, String batteriesRequired, int age, String code){
+		this.name = name;
+		this.brand = brand;
+		this.price = price;
+		if (batteriesRequired.equals("Yes") || batteriesRequired.equals("yes")){
+			this.batteriesRequired = true;
+		}
+		else {
+			this.batteriesRequired = false;
+		}
+		this.age = age;
+		this.code = code;
+	}
+
+	/***************** SETTERS / MUTATORS **********************************
+	 ***********************************************************************/
+
+	public void setName(String name){
+  		this.name = name;
+  	}
+	public void setBrand(String brand){
+  		this.brand = brand;
+ 	 }
+	public void setPrice(double price){
+  		this.price = price;
+ 	 }	
+	 public void setBatteriesRequired(String batteriesRequiredIn){
+  		if (batteriesRequiredIn.equals("Yes") || batteriesRequiredIn.equals("yes")){
+			this.batteriesRequired = true;
+		}
+		else {
+			this.batteriesRequired = false;
+		}
+		
+ 	 }
+	 public void setAge(int age){
+  		this.age = age;
+ 	 }
+	 public void setCode(String code){
+  		this.code = code;
+ 	 }
+	/**************** GETTERS / ACCESSORS **********************************
+	 ***********************************************************************/
+
+ 	public String getName(){
+		return this.name;
+	}
+	public String getBrand(){
+		return this.brand;
+	}
+	public double getPrice(){
+		return this.price;
+	}
+	public String getBatteriesRequired(){
+		if (batteriesRequired){
+			return "Yes";
+		}
+		else{
+			return "No";
+		}
+	}
+	public int getAge(){
+		return this.age;
+	}
+	public String getCode(){
+		return this.code;
+	}
+
+	/***********************************************************************
+	 * Other methods
+	 ***********************************************************************/
+
+	public void print() {
+        // print method that allows to print
+        // the content of all attributes
+		System.out.println("Toy's Information: ");
+		System.out.println();
+		System.out.println("Name: " + this.name);
+		System.out.println("Brand: " + this.brand);
+		System.out.println("Price: $" + this.price);
+		System.out.print("Batteries Required: ");
+		if (batteriesRequired) {
+			System.out.println("Yes");
+		}
+		else {
+			System.out.println("No");
+		}
+		System.out.println("Minimum Recommended Age: " + this.age);
+		System.out.println("Identification Code: " + this.code);
+		System.out.println();
+    }
+
+}
