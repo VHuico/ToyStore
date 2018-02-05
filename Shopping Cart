@@ -1,0 +1,128 @@
+/* 
+  by: [Victor Huicochea]
+*/
+
+
+import java.io.*;
+import java.util.Scanner;
+import java.util.*;
+import java.lang.*;
+
+public class ShoppingCart {
+  public static void main(String[] args) throws IOException{
+      //Create an instance of ToyStoreInventory using the given text file.
+	Scanner scnr = new Scanner(System.in);
+	double totalAmount =0.0;
+	
+	ToyStoreInventory newInventory = new ToyStoreInventory("toyList.txt");
+	System.out.println("Welcome to our Toy Store!\n");
+	int answer = 0;
+	while (answer < 3) {
+	try{
+		System.out.println("Please press 1 to see the list of toys.");
+		System.out.println("Please press 2 to buy a toy");
+		System.out.println("Please press 3 to Checkout");
+		System.out.println("Please press 4 to enter Test Mode");
+	
+		answer = scnr.nextInt();
+    }
+	catch (InputMismatchException e) {
+		System.out.println("Thrown Exception: " + e);
+		System.out.println("Seems like you pressed an unvalid key!");
+		break;
+	}	
+		//Display a menu to:
+     	//   1. Show list of toys
+		switch (answer) {
+		
+			case 1: 
+				newInventory.printInventory();
+				break;
+			case 2:
+				/*   2. Buy a toy - For this option display the name and code of all the
+                        items available in the inventory. Ask the user for the
+                        code and quantity of the desired toy. Check that there
+                        is enough quantity in stock for the purchase. If there's
+                        no enough quantity, print the mesage " The maximum
+                        quantity of this toy you can buy is X" */
+				if (answer == 2){
+					System.out.println();
+					newInventory.print();
+				
+					System.out.println("Please enter the letter of the toy you want to buy.");
+					scnr.nextLine();
+					String toyCode = scnr.next();
+					char toyLetter = toyCode.charAt(0);
+				
+				
+						
+				
+					if (! Character.isUpperCase(toyLetter)){
+						toyLetter = Character.toUpperCase(toyLetter);
+					}
+					
+					toyCode = Character.toString(toyLetter);
+					
+					System.out.println("How many do you want?");
+					int toyAmount = scnr.nextInt();
+					
+					int index = newInventory.findToy(toyCode);
+					if (newInventory.checkQuantity(toyCode) < toyAmount){ 
+						if (newInventory.checkQuantity(toyCode) == 0){
+							System.out.println("We are sorry, you entered a wrong letter or we don't have this toy anymore, please try again.\n");
+						}
+						else{
+						System.out.println("The maximum amount of toys you can buy is " + newInventory.checkQuantity(toyCode)+ "\n");
+						}
+					}
+					else {
+						totalAmount = totalAmount + newInventory.returnToy(index).getPrice();
+						newInventory.deleteToy(newInventory.returnToy(index), toyAmount);
+						System.out.println("Toy added to your Shopping Cart!\n");
+					}
+				}
+				break;
+			case 3:
+				/*   3. Checkout - For this option print the total to pay and subtract the
+                      purchased toys from the inventory (subtract quantity)*/	
+				System.out.println("Your final due is: $" + totalAmount);
+				break;
+				
+			case 4: 
+				System.out.println("Test 1: addToy method.\n");
+				ToyStoreItem RubiksCube = new ToyStoreItem();
+				System.out.println("Please enter the quantity for the new toy: ");
+				try{
+				int newToyQuantity = scnr.nextInt();
+				newInventory.addToy(RubiksCube, newToyQuantity);
+				}
+				catch(InputMismatchException e) {
+				System.out.println("Thrown Exception: " + e);
+				}
+				try{
+					newInventory.printSingleToy(11);
+				}
+				catch (NullPointerException e){
+				System.out.println(" Thrown exception: " + e);
+				}
+				System.out.println("Test 2: printInventory method.\n");
+				newInventory.printInventory();
+				
+				System.out.println("Test 3: getNumOfToys method.\n");
+				System.out.println("Num of Toys: " +newInventory.getNumOfToys()+"\n");
+				
+				System.out.println("Test 4: deleteToy method.\n");
+				System.out.println("How many toys do you want to delete?");
+				try {	
+					int deleteToyQuantity = scnr.nextInt();
+					newInventory.deleteToy(RubiksCube, deleteToyQuantity);
+				}
+				catch(InputMismatchException e) {
+					System.out.println("Thrown Exception: " + e);
+				}
+				newInventory.printSingleToy(11);
+				
+		}
+	}				  
+  }
+}
